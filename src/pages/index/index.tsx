@@ -5,8 +5,10 @@ import { View } from '@tarojs/components'
 import './index.scss'
 import { connect } from '@tarojs/redux'
 
+// 上层组件传入的 props
 type OwnProps = {}
 
+// 由 model 传入的 props
 type ModelProps = {
   count: number
   dispatch: Function
@@ -56,4 +58,5 @@ class Index extends Component {
   }
 }
 
+// 将上层传入的属性暴露
 export default Index as ComponentClass<OwnProps>

@@ -1,5 +1,15 @@
 import { create } from 'dva-core'
 import createLoading from 'dva-loading'
+import { Store } from 'redux'
+
+interface GetStore {
+  (): Store
+}
+
+export interface dvaApp {
+  use: Function
+  getStore: GetStore 
+}
 
 /**
  * 创建 dva 应用
