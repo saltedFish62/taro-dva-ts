@@ -1,0 +1,26 @@
+@import "src/styles/index.scss";
+
+.task {
+  width: 100%;
+
+  &__header {
+    width: 100%;
+    padding: $spacing-v-md $spacing-h-md;
+    display: flex;
+    flex-flow: row nowrap;
+    justify-content: space-between;
+    align-items: center;
+
+    &__title {
+      font-size: $f-s-header;
+      color: $f-c-base;
+      font-family: $f-cn-family;
+    }
+
+    &__plus {
+      $size: 60px;
+      width: $size;
+      height: $size;
+    }
+  }
+}

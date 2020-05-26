@@ -1,0 +1,23 @@
+@import "src/styles/index.scss";
+
+.header {
+  width: 100%;
+  position: relative;
+
+  &__bg {
+    width: 100%;
+    @include p-safe-t(0rpx);
+    height: 334rpx;
+    background: $color-brand--lighter;
+    position: absolute;
+    z-index: -1;
+  }
+
+  &__content {
+    width: 100%;
+
+    &__milestone {
+      height: 360px;
+    }
+  }
+}

@@ -1,0 +1,34 @@
+@import 'src/styles/index.scss';
+
+.input {
+  width: 100%;
+  height: 100%;
+  position: relative;
+  border-bottom: 1px solid $f-c-placeholder;
+  padding: $spacing-v-xl $spacing-h-sm $spacing-v-lg;
+
+  &__placeholder {
+    color: $f-c-placeholder;
+    font-size: $f-s-header;
+    @include placeholder;
+  }
+
+  &__content {
+    font-size: $f-s-header;
+    color: $f-c-base;
+  }
+
+  &--focus {
+    border-color: $f-c-base;
+    .input__placeholder {
+      @include placeholder--fill;
+    }
+  }
+
+  &--error {
+    border-color: $c-error;
+    .input__placeholder {
+      color: $c-error;
+    }
+  }
+}

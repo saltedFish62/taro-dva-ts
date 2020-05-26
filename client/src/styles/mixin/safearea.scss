@@ -1,0 +1,11 @@
+@import '../params_default.scss';
+
+@mixin p-safe-t($offset: 0rpx) {
+  padding-top: calc(#{$offset} + constant(safe-area-inset-top));
+  padding-top: calc(#{$offset} + env(safe-area-inset-top));
+}
+
+@mixin p-safe-b($offset: 0rpx) {
+  padding-bottom: calc(#{$offset} + constant(safe-area-inset-bottom));
+  padding-bottom: calc(#{$offset} + env(safe-area-inset-bottom));
+}

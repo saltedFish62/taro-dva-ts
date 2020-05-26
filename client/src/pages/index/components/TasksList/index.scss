@@ -1,0 +1,50 @@
+@import "src/styles";
+
+.draggable {
+  width: 100%;
+  box-sizing: border-box;
+  position: relative;
+
+  &__placeholder {
+    $color: $f-s-base;
+    width: 100%;
+    padding: $spacing-v-md 0;
+    text-align: center;
+  }
+
+  &__item {
+    width: 100%;
+    height: auto;
+    padding: 0 $spacing-h-md;
+    box-sizing: border-box;
+    position: absolute;
+  }
+}
+
+.task {
+  &__item {
+    width: 100%;
+    height: auto;
+    transition: transform 200ms ease;
+    padding-bottom: 2px;
+    transform: scale(1);
+
+    &--dragging {
+      transform: scale(1.1);
+      box-shadow: 0 0 22px 0 rgba($color: #999, $alpha: 0.2);
+    }
+  }
+}
+
+.tasks {
+  width: 100%;
+  position: relative;
+  box-sizing: border-box;
+}
+
+.no-records {
+  width: 100%;
+  padding: 30px 0;
+  text-align: center;
+  @include text-base(#999);
+}

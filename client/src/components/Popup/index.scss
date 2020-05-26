@@ -1,0 +1,78 @@
+@import "../../styles";
+
+$duration: 300ms;
+
+.popup {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100vw;
+  height: 100vh;
+  visibility: hidden;
+  z-index: 999;
+  transition: visibility $duration cubic-bezier(0.36, 0.66, 0.04, 1);
+
+  &--actived {
+    visibility: initial;
+
+    .popup {
+      &__mask {
+
+        &,
+        &--transparent {
+          opacity: 1;
+        }
+      }
+
+      &__container {
+        transform: translateY(0);
+      }
+    }
+  }
+
+  &__mask {
+    background-color: rgba($color: #000, $alpha: 0.2);
+
+    &,
+    &--transparent {
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      position: absolute;
+      opacity: 0;
+      transition: opacity $duration ease-in-out;
+    }
+  }
+
+  &__container {
+    width: 100%;
+    min-height: 500px;
+    max-height: 70%;
+    background-color: #fff;
+    position: absolute;
+    bottom: 0;
+    left: 0;
+    border-top-left-radius: $border-radius-big;
+    border-top-right-radius: $border-radius-big;
+    transform: translateY(100%);
+    transition: transform $duration cubic-bezier(0.36, 0.66, 0.04, 1);
+    box-shadow: 0 0 24px 0 rgba($color: #666, $alpha: 0.3);
+  }
+
+  &__pull-down {
+    width: 100%;
+    height: 88px;
+    display: flex;
+    flex-flow: row nowrap;
+    justify-content: center;
+    padding-top: 22px;
+
+    &__btn {
+      width: 100px;
+      height: 12px;
+      background-color: #ccc;
+      border-radius: 5px;
+    }
+  }
+}

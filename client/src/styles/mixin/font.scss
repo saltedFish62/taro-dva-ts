@@ -1,0 +1,42 @@
+@import '../params_default.scss';
+
+@mixin placeholder($duration: 200ms) {
+  transition: transform $duration ease-in-out;
+  transform: scale(1) translateY(0);
+  transform-origin: 0 0 0;
+  position: absolute;
+  top: $spacing-v-xl;
+  left: $spacing-h-sm;
+}
+
+@mixin placeholder--fill {
+  transform: scale(0.6) translateY(-130%);
+}
+
+@mixin text-giant($color: $f-c-base) {
+  font-family: $f-cn-family;
+  font-size: $f-s-giant;
+  color: $color;
+  line-height: $f-lh-giant;
+}
+
+@mixin text-header($color: $f-c-base) {
+  font-family: $f-cn-family;
+  font-size: $f-s-header;
+  color: $color;
+  line-height: $f-lh-header;
+}
+
+@mixin text-base($color: $f-c-base) {
+  font-family: $f-cn-family;
+  font-size: $f-s-base;
+  color: $color;
+  line-height: $f-lh-base;
+}
+
+@mixin text-xs($color: $f-c-base) {
+  font-family: $f-cn-family;
+  font-size: $f-s-xs;
+  color: $color;
+  line-height: $f-lh-xs;
+}

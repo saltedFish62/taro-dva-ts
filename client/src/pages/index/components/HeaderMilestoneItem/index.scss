@@ -1,0 +1,50 @@
+@import "src/styles/index.scss";
+
+.milestone {
+  display: flex;
+  flex-flow: column nowrap;
+  justify-content: center;
+  width: 610px;
+  height: 260px;
+  background: white;
+  border-radius: $border-radius-normal;
+  padding: 40px;
+  box-shadow: 0 8px 32px 0 rgba($color: #B2DFDB, $alpha: 0.3);
+  box-sizing: border-box;
+  margin: 40px 30px 54px;
+
+  &__aim {
+    font-size: $f-s-header;
+    color: $f-c-base;
+    font-family: $f-cn-family;
+  }
+
+  &__desc {
+    font-size: $f-s-base;
+    color: $f-c-secondary;
+    font-family: $f-cn-family;
+  }
+
+  &--add {
+    @extend .milestone;
+    display: flex;
+    flex-flow: row nowrap;
+    justify-content: center;
+    align-items: center;
+
+    &__icon {
+      $size: 80px;
+      margin-right: 16px;
+      width: $size;
+      height: $size;
+    }
+  }
+}
+
+.flex-1 {
+  flex: 1;
+}
+
+.m-b {
+  margin-bottom: 24px;
+}

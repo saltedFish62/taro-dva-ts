@@ -1,8 +1,9 @@
 {
-	"miniprogramRoot": "dist/",
-	"projectname": "tmpl-dva-ts",
-	"description": "taro + dva + ts",
-	"appid": "testId",
+	"miniprogramRoot": "client/dist/",
+	"projectname": "%E6%9E%9C%E6%97%B6",
+	"description": "每一滴汗水都在浇灌自己。",
+	"appid": "wx588a0befbeea3f75",
+	"cloudfunctionRoot": "cloud/functions/",
 	"setting": {
 		"urlCheck": true,
 		"es6": false,
@@ -10,8 +11,8 @@
 		"preloadBackgroundData": false,
 		"minified": false,
 		"newFeature": true,
-		"coverView": true,
 		"autoAudits": false,
+		"coverView": true,
 		"showShadowRootInWxmlPanel": true,
 		"scopeDataCheck": false,
 		"checkInvalidKey": true,

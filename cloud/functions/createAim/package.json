@@ -1,0 +1,16 @@
+{
+  "name": "createAim",
+  "version": "1.0.0",
+  "description": "",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "author": "",
+  "license": "ISC",
+  "dependencies": {
+    "dayjs": "^1.8.26",
+    "validate.js": "^0.13.1",
+    "wx-server-sdk": "latest"
+  }
+}

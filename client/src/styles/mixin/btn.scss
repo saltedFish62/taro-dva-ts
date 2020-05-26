@@ -1,0 +1,13 @@
+@import '../params_default.scss';
+
+@mixin btn($background-color: $color-brand, $color: #fff) {
+  background-color: $background-color;
+  color: $color;
+  width: 100%;
+  height: 100px;
+  line-height: 100px;
+  font-size: $f-s-header;
+  font-family: $f-cn-family;
+  border: none;
+  border-radius: 11px;
+}
