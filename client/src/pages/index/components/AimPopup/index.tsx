@@ -17,6 +17,10 @@ type Props = {
 
 type OwnProps = {}
 
+interface AimPopup {
+  props: Props & OwnProps
+}
+
 const initialState = {
   aim: '',
   slogan: '',
@@ -27,27 +31,10 @@ const initialState = {
 
 type State = Readonly<typeof initialState>
 
-interface AimPopup {
-  props: Props & OwnProps
-}
-
 @connect(({ index }) => ({
   open: index.aim.popupVisibility,
 }))
 class AimPopup extends Component {
-  // this.validator = validator({
-  //   aim: {
-  //     rules: 'required|maxlength:8',
-  //     message: {
-  //       required: '还没想好目标么',
-  //       maxlength: '简练的描述更有力量'
-  //     }
-  //   },
-  //   slogan: {
-  //     rules: 'maxlength:50',
-  //     message: '勉励的话说太多了'
-  //   }
-  // })
 
   state: State = initialState
 
@@ -83,26 +70,25 @@ class AimPopup extends Component {
   }
 
   validateForm() {
-    // todo: validate
+    const {
+      aim, slogan
+    } = this.state
 
-    // const {
-    //   aim, slogan, date
-    // } = this.state
-    return true
+    const error = {}
+    if (!aim) {
+      error['aim'] = '还没想好目标么'
+    }
+    if (aim.length > 8) {
+      error['aim'] = '简练的描述更有力量'
+    }
+    if (slogan && slogan.length > 50) {
+      error['slogan'] = '勉励的话说太多了'
+    }
 
-    // if (this.validator.checkForm({
-    //   aim, slogan, date
-    // })) return true
-
-    // const error = {}
-    // this.validator.errorList.forEach(it => {
-    //   error[it.param] = it.msg
-    // })
-
-    // this.setState({
-    //   error
-    // })
-    // return this.validator.valid()
+    this.setState({
+      error
+    })
+    return Object.keys(error).length < 1
   }
 
   onClose = () => {

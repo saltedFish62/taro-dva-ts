@@ -49,7 +49,6 @@
     "dva-loading": "^3.0.20",
     "nerv-devtools": "^1.5.5",
     "nervjs": "^1.5.5",
-    "react-hook-form": "^5.7.2",
     "redux": "^4.0.5",
     "regenerator-runtime": "0.11.1"
   },
