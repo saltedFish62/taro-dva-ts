@@ -13,11 +13,11 @@ type Props = {
   children: any
 }
 
-interface SafeAreaBottom {
+interface Index {
   props: Props
 }
 
-class SafeAreaBottom extends Component {
+class Index extends Component {
 
   state: State = initialState
 
@@ -39,4 +39,4 @@ class SafeAreaBottom extends Component {
   }
 }
 
-export default SafeAreaBottom
+export default Index

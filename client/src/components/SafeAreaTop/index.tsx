@@ -7,11 +7,11 @@ type Props = {
   children: any
 }
 
-interface SafeAreaTop {
+interface Index {
   props: Props
 }
 
-class SafeAreaTop extends Component {
+class Index extends Component {
 
   style() {
     const { safeArea } = Taro.getSystemInfoSync()
@@ -29,4 +29,4 @@ class SafeAreaTop extends Component {
   }
 }
 
-export default SafeAreaTop
+export default Index

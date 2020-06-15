@@ -17,11 +17,11 @@ const initialState = {
 
 type State = Readonly<typeof initialState>
 
-interface CustomTextarea {
+interface Index {
   props: Props
 }
 
-class CustomTextarea extends Component {
+class Index extends Component {
 
   state: State = initialState
 
@@ -76,4 +76,4 @@ class CustomTextarea extends Component {
   }
 }
 
-export default CustomTextarea
+export default Index

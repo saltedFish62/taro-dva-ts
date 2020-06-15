@@ -9,11 +9,11 @@ type Props =  {
   error?: string
 }
 
-interface PickerContent {
+interface Index {
   props: Props
 }
 
-class PickerContent extends Component {
+class Index extends Component {
   render() {
     const {
       value, placeholder, error
@@ -33,4 +33,4 @@ class PickerContent extends Component {
     )
   }
 }
-export default PickerContent
+export default Index

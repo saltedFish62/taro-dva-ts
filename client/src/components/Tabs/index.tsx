@@ -5,6 +5,7 @@ import './index.scss'
 import { ComponentClass } from 'react'
 
 type Props = {
+  current: String | Number
 }
 
 interface Index {

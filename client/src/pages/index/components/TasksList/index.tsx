@@ -1,4 +1,4 @@
-import { reduce, cloneDeep } from 'lodash'
+import { reduce } from 'lodash'
 import Taro from '@tarojs/taro'
 import { View, MovableArea, MovableView } from '@tarojs/components'
 import { connect } from '@tarojs/redux'

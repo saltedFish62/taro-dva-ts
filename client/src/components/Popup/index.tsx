@@ -19,11 +19,11 @@ const initialState = {
 
 type State = Readonly<typeof initialState>
 
-interface Popup {
+interface Index {
   props: Props
 }
 
-class Popup extends Component {
+class Index extends Component {
 
   static defaultProps = {
     open: false,
@@ -143,4 +143,4 @@ class Popup extends Component {
   }
 }
 
-export default Popup
+export default Index

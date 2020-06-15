@@ -17,11 +17,11 @@ const initialState = {
 
 type State = Readonly<typeof initialState>
 
-interface CustomInput {
+interface Index {
   props: Props
 }
 
-class CustomInput extends Component {
+class Index extends Component {
 
   state: State = initialState
 
@@ -76,4 +76,4 @@ class CustomInput extends Component {
   }
 }
 
-export default CustomInput
+export default Index

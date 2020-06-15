@@ -21,13 +21,25 @@ interface HeaderAim {
   ...index.aim
 }))
 class HeaderAim extends Component {
+
+  handleAimClick = () => {
+    const { dispatch, title } = this.props
+    if (title) {
+      Taro.navigateTo({
+        url: "/pages/detail/index",
+      })
+    } else {
+      dispatch({ type: 'index/openAimPopup' })
+    }
+  }
+
   render() {
     const {
-      title, subtitle, date, dispatch
+      title, subtitle, date,
     } = this.props
 
     return (
-      <View className='aim' onClick={() => { dispatch({ type: 'index/openAimPopup' }) }}>
+      <View className='aim' onClick={this.handleAimClick}>
         <View className='aim__title'>{title ? title : '做有目标的咸鱼'}</View>
         <View className='aim__subtitle'>
           {`${toToday(date)}${date ? '，' : ''}${subtitle ? subtitle : '所有的努力都是灌溉自己。'}`}

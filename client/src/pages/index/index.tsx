@@ -58,5 +58,4 @@ class Index extends Component {
   }
 }
 
-// 将上层传入的属性暴露
 export default Index as ComponentClass<OwnProps>
