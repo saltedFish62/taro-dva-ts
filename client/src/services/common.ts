@@ -1,6 +1,6 @@
-import BasicServices from './basic'
+import cr from 'src/lib/cloud_request'
 
-export default class Common extends BasicServices {
+export default class Common {
 
   /**
    * 登录获取用户信息
@@ -8,7 +8,7 @@ export default class Common extends BasicServices {
 
   login = () => {
 
-    return this.call({
+    return cr.call({
       name: 'login'
     })
 

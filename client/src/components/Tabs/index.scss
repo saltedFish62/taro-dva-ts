@@ -1,0 +1,26 @@
+@import "src/styles/index.scss";
+
+.tabs {
+  width: 100%;
+  display: flex;
+  flex-flow: row nowrap;
+  align-items: flex-end;
+  height: $f-lh-header + $spacing-v-md;
+  padding: 0 50px;
+}
+
+.tab-item {
+  width: auto;
+  padding-bottom: $spacing-v-md;
+  box-sizing: border-box;
+  margin-right: $spacing-h-sm;
+  font-size: $f-s-base;
+  font-family: $f-cn-family;
+  transition-duration: 100ms;
+  transition-timing-function: linear;
+  transition-property: all;
+
+  &--active {
+    font-size: $f-s-header;
+  }
+}

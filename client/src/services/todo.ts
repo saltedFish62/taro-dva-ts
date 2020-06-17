@@ -1,19 +1,19 @@
-import BasicServices from './basic'
 import { CreateTaskReq } from 'src/types';
+import cr from 'src/lib/cloud_request'
 import dayjs from 'dayjs'
 
 const collection = 'todo'
 
-export default class Todo extends BasicServices {
+export default class Todo {
 
   create = async (req: CreateTaskReq): Promise<any> => {
 
-    const id = await this.post({
+    const id = await cr.post({
       collection,
       data: req
     })
 
-    return this.get({
+    return cr.get({
       collection,
       id
     })
@@ -23,10 +23,10 @@ export default class Todo extends BasicServices {
   list = (): Promise<any> => {
 
     const today = dayjs().format('YYYY-MM-DD')
-    return this.where({
+    return cr.where({
       collection,
       data: {
-        date: this.command.eq(today)
+        date: cr.command.eq(today)
       }
     })
 

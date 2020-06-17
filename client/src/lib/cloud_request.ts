@@ -1,47 +1,7 @@
 import Taro from '@tarojs/taro'
+import { GetReq, PostReq, DeleteReq, PutReq, PageReq, CallReq, WhereReq } from 'src/types'
 
-export interface GetReq {
-  collection: string
-  id: string | number | undefined
-}
-
-export interface PostReq {
-  collection: string
-  data: PostBody
-}
-
-export interface PostBody {
-  createTime?: Taro.DB.Database.ServerDate
-  [key: string]: any
-}
-
-export interface DeleteReq {
-  collection: string
-  id: string | number
-}
-
-export interface PutReq {
-  collection: string
-  data: PutBody
-  method?: string
-}
-
-export interface PutBody {
-  id: string | number
-  [key: string]: any
-}
-
-export interface WhereReq {
-  collection: string
-  data: any
-}
-
-export interface CallReq {
-  name: string
-  data?: any
-}
-
-export default class BasicService {
+class CloudRequest {
   constructor() {
     const cloud = Taro.cloud
     cloud.init({
@@ -65,6 +25,10 @@ export default class BasicService {
     reject(err)
   }
 
+  /**
+   * 查询
+   * @param req 
+   */
   get(req: GetReq): Promise<any> {
     const { collection, id } = req
     if (!collection) throw 'db: collection shouldn\'t be empty'
@@ -78,6 +42,10 @@ export default class BasicService {
     })
   }
 
+  /**
+   * 创建
+   * @param req 
+   */
   post(req: PostReq): Promise<Taro.DB.Document.DocumentId> {
     const { collection, data } = req
     if (!collection) throw 'db: collection shouldn\'t be empty'
@@ -95,6 +63,10 @@ export default class BasicService {
     })
   }
 
+  /**
+   * 删除
+   * @param req 
+   */
   delete(req: DeleteReq): Promise<number> {
     const { collection = '', id = '' } = req
     if (!collection) throw 'db: collection shouldn\'t be empty'
@@ -109,6 +81,10 @@ export default class BasicService {
     })
   }
 
+  /**
+   * 更新
+   * @param req 
+   */
   put(req: PutReq): Promise<number> {
     const { collection, data, method = 'update' } = req
     if (!collection) throw 'db: collection shouldn\'t be empty'
@@ -141,6 +117,42 @@ export default class BasicService {
     })
   }
 
+  /**
+   * 翻页
+   * @param req 
+   */
+  page(req: PageReq): Promise<any> {
+    const { collection, sort, filters, pageNo, pageSize = 10 } = req
+    if (!collection) throw 'db: collection shouldn\'t be empty'
+
+    return new Promise((resolve, reject) => {
+      let model = this._db.collection(collection).aggregate()
+
+      // 有filters
+      if (!!filters && Object.keys(filters).length > 0) {
+        model = model.match(filters)
+      }
+
+      // 有sort
+      if (!!sort && Object.keys(sort).length > 0) {
+        model = model.sort(sort)
+      }
+
+      if (!!pageNo && pageNo > 0) {
+        model = model.skip(pageNo * pageSize)
+      }
+
+      model.limit(pageSize)
+        .end()
+        .then(res => resolve(res))
+        .catch(err => this.errorHandler(err, reject))
+    })
+  }
+
+  /**
+   * 调用云函数
+   * @param req 
+   */
   call(req: CallReq): Promise<any> {
     const { name, data } = req
     if (!name) throw 'request: name shouldn\t be empty'
@@ -161,3 +173,5 @@ export default class BasicService {
     })
   }
 }
+
+export default new CloudRequest()

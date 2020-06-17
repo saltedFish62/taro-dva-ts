@@ -38,6 +38,8 @@ class Index extends Component {
     dispatch({
       type: 'index/fetchTasks'
     })
+
+    Taro.navigateTo({ url: '/pages/detail/index' })
   }
 
   render() {

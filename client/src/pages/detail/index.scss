@@ -1,7 +1,7 @@
 @import "src/styles/index.scss";
 
 .aim {
-  padding: 30px 50px;
+  padding: 30px 50px 0;
   background: $color-brand-dark;
 
   &__title {
@@ -45,4 +45,20 @@
       @include text-base(white);
     }
   }
+}
+
+.tabs-bar {
+  width: 100%;
+  display: flex;
+  flex-flow: row nowrap;
+  justify-content: space-between;
+  align-items: flex-end;
+  background: $color-brand-dark;
+}
+
+.add-btn {
+  $size: 36px;
+  width: $size;
+  height: $size;
+  margin: 0 $spacing-h-md $spacing-v-md 0;
 }

@@ -1,24 +1,25 @@
-import { AimState, MilestoneState } from 'src/constants/enums'
-import BasicServices from './basic'
-import { CreateAimReq, CreateMilestoneReq, Aim } from 'src/types'
+import { AimState } from 'src/constants/enums'
+import { CreateAimReq, UpsertMilestoneReq, Aim } from 'src/types'
 
-export default class AimService extends BasicServices {
+import cr from 'src/lib/cloud_request'
+
+export default class AimService {
 
   createAim = async (req: CreateAimReq): Promise<Aim> => {
     const { title, subtitle, date } = req
     const collection = 'aim'
 
-    const res = await this.where({
+    const res = await cr.where({
       collection,
       data: {
-        state: this.command.eq(AimState.Current)
+        state: cr.command.eq(AimState.Current)
       }
     })
 
     if (res && res.length > 0) {
       // 标记原先已进行的目标为挂起
       for (let i = 0; i < res.length; i++) {
-        await this.put({
+        await cr.put({
           collection,
           data: {
             id: res[i]._id!,
@@ -28,7 +29,7 @@ export default class AimService extends BasicServices {
       }
     }
 
-    const createRes = await this.post({
+    const createRes = await cr.post({
       collection,
       data: {
         title,
@@ -39,7 +40,7 @@ export default class AimService extends BasicServices {
       }
     })
 
-    return this.get({
+    return cr.get({
       collection,
       id: createRes,
     })
@@ -47,43 +48,41 @@ export default class AimService extends BasicServices {
   }
 
   retrieveCurrentAim = () => {
-    return this.where({
+    return cr.where({
       collection: 'aim',
       data: {
-        state: this.command.eq(AimState.Current)
+        state: cr.command.eq(AimState.Current)
       }
     })
   }
 
-  createMilestone = async (req: CreateMilestoneReq) => {
-    const {
-      aimId,
-      index = 0,
-      aim = '',
-      state = MilestoneState.Current,
-      desc = '',
-      reward = '',
-      result = '',
-    } = req
+  createMilestone = async (req: UpsertMilestoneReq) => {
+    // const {
+    //   aimId,
+    //   aim = '',
+    //   state = MilestoneState.Current,
+    //   desc = '',
+    //   reward = '',
+    //   result = '',
+    // } = req
 
-    const key = 'milestones.' + index.toString()
-    const collection = 'aim'
+    // const collection = 'aim'
 
-    const createTime = new Date()
+    // const createTime = new Date()
 
-    await this.put({
-      collection,
-      data: {
-        id: aimId,
-        [key]: {
-          aim, state, desc, reward, result, createTime,
-        }
-      }
-    })
+    // await cr.put({
+    //   collection,
+    //   data: {
+    //     id: aimId,
+    //     [key]: {
+    //       aim, state, desc, reward, result, createTime,
+    //     }
+    //   }
+    // })
 
-    return this.get({
-      collection,
-      id: aimId
-    })
+    // return cr.get({
+    //   collection,
+    //   id: aimId
+    // })
   }
 }

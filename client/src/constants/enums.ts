@@ -16,3 +16,8 @@ export enum TaskState {
   Doing,
   Finished,
 }
+
+export enum SortType {
+  ASC = 1,
+  DSC = -1
+}

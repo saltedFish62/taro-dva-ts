@@ -1,15 +1,14 @@
 import Taro, { Component, Config } from '@tarojs/taro'
-import { View, Image } from '@tarojs/components'
-
-import './index.scss'
 import { connect } from '@tarojs/redux'
 import { Aim, Milestone } from 'src/types'
 import { toToday } from 'src/utils/format'
 import { ComponentClass } from 'react'
 
+import { View, Image } from '@tarojs/components'
 import Tabs from 'src/components/Tabs'
-import Tab from 'src/components/Tab'
+import { map } from 'lodash'
 
+import './index.scss'
 import PlusIcon from 'src/assets/images/plus-white.png'
 import TimeIcon from 'src/assets/images/time-white.png'
 import DeleteIcon from 'src/assets/images/delete-white.png'
@@ -30,6 +29,13 @@ interface Index {
 
 const initialState = {
   current: 0,
+  tabs: [
+    { title: '全部里程碑' },
+    { title: '待达成' },
+    { title: '待奖励' },
+    { title: '已终结' }
+  ],
+  lists: map(new Array(4), () => []),
 }
 
 type State = Readonly<typeof initialState>
@@ -50,7 +56,7 @@ class Index extends Component {
   }
 
   handleAimClick = () => {
-
+    console.log('click aim')
   }
 
   handleFinishAim = () => {
@@ -63,6 +69,16 @@ class Index extends Component {
 
   handleDeleteAim = () => {
     console.log('click aim delete')
+  }
+
+  handleTabsChange = (idx) => {
+    this.setState({
+      current: idx
+    })
+  }
+
+  handleAddClick = () => {
+    console.log('click add')
   }
 
   renderHeader() {
@@ -118,13 +134,24 @@ class Index extends Component {
   }
 
   render() {
-    const { current } = this.state
+    const { current, tabs } = this.state
+
     return (
       <View>
         {this.renderHeader()}
-        <Tabs current={current}>
-          <Tab></Tab>
-        </Tabs>
+        <View className="tabs-bar">
+          <Tabs
+            tabList={tabs}
+            current={current}
+            color="#fff"
+            onChange={this.handleTabsChange}
+          ></Tabs>
+          <Image
+            className="add-btn"
+            src={PlusIcon}
+            onClick={this.handleAddClick}
+          ></Image>
+        </View>
       </View>
     )
   }

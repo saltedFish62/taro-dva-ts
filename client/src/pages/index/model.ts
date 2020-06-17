@@ -2,7 +2,7 @@ import { AimState, TaskState } from 'src/constants/enums'
 import services from 'src/services'
 import dayjs from 'dayjs'
 import { concat, map, max } from 'lodash'
-import { DBStruct } from 'src/types/DB'
+import { Task } from 'src/types'
 
 export default {
   namespace: 'index',
@@ -76,7 +76,7 @@ export default {
 
       const now = dayjs().format('YYYY-MM-DD')
 
-      const req: DBStruct.TodoItem = {
+      const req: Task = {
         plan,
         sort: max(map(todos, it => it.sort)) + 1 || 0,
         expireAt,
