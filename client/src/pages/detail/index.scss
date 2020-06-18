@@ -2,7 +2,7 @@
 
 .aim {
   padding: 30px 50px 0;
-  background: $color-brand-dark;
+  background: $color-brand--dark;
 
   &__title {
     font-family: $f-cn-family;
@@ -53,7 +53,7 @@
   flex-flow: row nowrap;
   justify-content: space-between;
   align-items: flex-end;
-  background: $color-brand-dark;
+  background: $color-brand--dark;
 }
 
 .add-btn {

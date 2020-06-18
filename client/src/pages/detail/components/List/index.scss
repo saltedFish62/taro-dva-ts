@@ -1,0 +1,24 @@
+@import "src/styles/index";
+
+.list-item {
+  width: 100%;
+  border-bottom: 2px solid $border-c;
+
+  &__content {
+    padding: 40px;
+    background: white;
+    box-sizing: border-box;
+
+    &__aim {
+      font-size: $f-s-header;
+      color: $f-c-base;
+      font-family: $f-cn-family;
+    }
+
+    &__desc, &__reward {
+      font-size: $f-s-base;
+      color: $f-c-secondary;
+      font-family: $f-cn-family;
+    }
+  }
+}

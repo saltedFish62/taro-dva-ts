@@ -33,13 +33,11 @@ class Index extends Component {
   componentDidMount = () => {
     const { dispatch } = this.props
     dispatch({
-      type: 'index/fetchAim'
+      type: 'index/init'
     })
     dispatch({
       type: 'index/fetchTasks'
     })
-
-    Taro.navigateTo({ url: '/pages/detail/index' })
   }
 
   render() {

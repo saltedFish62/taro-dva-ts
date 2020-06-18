@@ -1,8 +1,8 @@
 export type Task = {
-  date: string // YYYY-MM-DD
+  createTime?: Date
   plan: string
   state: number
-  expireAt: Date
+  minutes: number
   sort: number
-  _id?: string
+  id?: string
 }

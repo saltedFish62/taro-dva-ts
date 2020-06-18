@@ -61,18 +61,15 @@ class TaskPopup extends Component {
 
     if (!this.validateForm()) return
 
-    let expireAt: Date | null = null
+    let minutes: number | null = null
     if (time.length > 0) {
-     expireAt = dayjs().endOf('day')
-      .subtract(time[0] || 0, 'hour')
-      .subtract(time[1] || 0, 'minute')
-      .toDate()
+      minutes = (time[0] || 0) * 60 + (time[1] || 0)
     }
 
     await dispatch({
       type: 'index/createTask',
       payload: {
-        expireAt,
+        minutes,
         plan,
       }
     })

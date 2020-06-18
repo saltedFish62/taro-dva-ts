@@ -1,0 +1,14 @@
+{
+  "name": "retrieveaim",
+  "version": "1.0.0",
+  "description": "retrieve aim and owned milestones",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "author": "saltedFish",
+  "license": "ISC",
+  "dependencies": {
+    "wx-server-sdk": "latest"
+  }
+}

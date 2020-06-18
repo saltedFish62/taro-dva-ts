@@ -1,13 +1,14 @@
 import { AimState } from 'src/constants/enums'
-import { CreateAimReq, UpsertMilestoneReq, Aim } from 'src/types'
+import { CreateAimReq, Aim } from 'src/types'
 
 import cr from 'src/lib/cloud_request'
+
+const collection = 'aim'
 
 export default class AimService {
 
   createAim = async (req: CreateAimReq): Promise<Aim> => {
     const { title, subtitle, date } = req
-    const collection = 'aim'
 
     const res = await cr.where({
       collection,
@@ -35,7 +36,6 @@ export default class AimService {
         title,
         subtitle,
         date,
-        milestones: [],
         state: AimState.Current,
       }
     })
@@ -47,42 +47,15 @@ export default class AimService {
 
   }
 
-  retrieveCurrentAim = () => {
-    return cr.where({
-      collection: 'aim',
+  retrieveCurrentAim = async () => {
+    const aimRsp = await cr.where({
+      collection,
       data: {
         state: cr.command.eq(AimState.Current)
       }
     })
+
+    return aimRsp.length > 0 ? aimRsp[0] : null
   }
 
-  createMilestone = async (req: UpsertMilestoneReq) => {
-    // const {
-    //   aimId,
-    //   aim = '',
-    //   state = MilestoneState.Current,
-    //   desc = '',
-    //   reward = '',
-    //   result = '',
-    // } = req
-
-    // const collection = 'aim'
-
-    // const createTime = new Date()
-
-    // await cr.put({
-    //   collection,
-    //   data: {
-    //     id: aimId,
-    //     [key]: {
-    //       aim, state, desc, reward, result, createTime,
-    //     }
-    //   }
-    // })
-
-    // return cr.get({
-    //   collection,
-    //   id: aimId
-    // })
-  }
 }

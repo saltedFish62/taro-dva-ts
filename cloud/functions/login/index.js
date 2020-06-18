@@ -31,25 +31,4 @@ exports.main = async (event, context) => {
     return {
         code: 0
     }
-
-    try {
-        await db.doc(OPENID).update({
-            data: {
-                latestLogin: now
-            }
-        })
-    } catch (e) {
-        console.log(e)
-        await db.add({
-            data: {
-                latestLogin: now,
-                _id: OPENID
-            }
-        })
-    }
-
-    return {
-        code: 0,
-        msg: 'ok',
-    }
 }

@@ -1,8 +1,8 @@
 // color
 $color-brand: #26a69a;
-$color-brand-light: #5cbcb3;
+$color-brand--light: #5cbcb3;
 $color-brand--lighter: #B2DFDB;
-$color-brand-dark: #009688;
+$color-brand--dark: #009688;
 
 // func-color
 $c-error: #f5222d;
@@ -14,6 +14,8 @@ $c-info: $color-brand;
 $f-c-base: #263238;
 $f-c-secondary: #455A64;
 $f-c-placeholder: #999;
+
+$border-c: #999;
 
 // font-family
 $f-cn-family: PingFangSC-Regular;

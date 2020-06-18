@@ -3,10 +3,11 @@ import { connect } from '@tarojs/redux'
 import { Aim, Milestone } from 'src/types'
 import { toToday } from 'src/utils/format'
 import { ComponentClass } from 'react'
+import { map } from 'lodash'
 
 import { View, Image } from '@tarojs/components'
 import Tabs from 'src/components/Tabs'
-import { map } from 'lodash'
+import MilestoneList from './components/List'
 
 import './index.scss'
 import PlusIcon from 'src/assets/images/plus-white.png'
@@ -135,6 +136,7 @@ class Index extends Component {
 
   render() {
     const { current, tabs } = this.state
+    const { milestones } = this.props
 
     return (
       <View>
@@ -152,6 +154,7 @@ class Index extends Component {
             onClick={this.handleAddClick}
           ></Image>
         </View>
+        <MilestoneList list={milestones}></MilestoneList>
       </View>
     )
   }

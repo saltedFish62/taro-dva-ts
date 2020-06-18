@@ -33,7 +33,7 @@ const initialState = {
 type State = Readonly<typeof initialState>
 
 @connect(({ index }) => ({
-  list: index.todos
+  list: index.tasks
 }))
 class TasksList extends Taro.Component {
 
@@ -49,27 +49,26 @@ class TasksList extends Taro.Component {
   initHeight = async () => {
     const { list } = this.props
 
-    // 元素之间的间隔
-    const gap = 1
-
     const idHeightMap = await this.getItemIdHeightMap()
+
+    console.log(idHeightMap)
 
     // 更新MovableArea高度
     let areaHeight = 0
     for (const k in idHeightMap) {
-      areaHeight += idHeightMap[k] + gap
+      areaHeight += idHeightMap[k]
     }
 
     // 各个节点的位置信息
     const idPosMap = {}
     reduce(list, (res, it) => {
-      const height = idHeightMap[it._id!]
-      idPosMap[it._id!] = {
+      const height = idHeightMap[it.id!]
+      idPosMap[it.id!] = {
         height,
         y: res,
         sort: it.sort,
       }
-      return res + height + gap
+      return res + height
     }, 0)
 
     this.setState({
@@ -240,26 +239,26 @@ class TasksList extends Taro.Component {
         {
           list.map(it => (
             <MovableView
-              key={it._id}
+              key={it.id}
               className="draggable__item"
               direction="vertical"
               disabled={true}
               outOfBounds={true}
               damping={36}
-              animation={!(draggingId === it._id && draggingY !== idPosMap[it._id!].y)}
-              y={draggingId === it._id ? draggingY : idPosMap[it._id!].y}
+              animation={!(draggingId === it.id && draggingY !== idPosMap[it.id!].y)}
+              y={draggingId === it.id ? draggingY : idPosMap[it.id!].y}
               style={{
-                zIndex: draggingId === it._id ? 999 : idPosMap[it._id!] && idPosMap[it._id!].sort
+                zIndex: draggingId === it.id ? 999 : idPosMap[it.id!] && idPosMap[it.id!].sort
               }}
               onLongPress={(e) => {
-                this.onLongPress(it._id, e)
+                this.onLongPress(it.id, e)
               }}
               onTouchMove={this.onTouchMove}
               onTouchEnd={this.onTouchEnd}
             >
               <View
-                className={draggingId === it._id ? 'task__item--dragging' : 'task__item'}
-                id={it._id}
+                className={draggingId === it.id ? 'task__item--dragging' : 'task__item'}
+                id={it.id}
               >
                 <TaskItem {...it}></TaskItem>
               </View>

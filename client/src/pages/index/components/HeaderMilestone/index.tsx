@@ -50,7 +50,7 @@ type State = Readonly<typeof initialState>
   const list = orderBy(index.milestones, 'state', 'desc')
   if (list) {
     current = list.findIndex(it => it.state === MilestoneState.Current)
-    current = current === -1 ? list.length : current
+    current = current === -1 ? list.length - 1 : current
   }
   return {
     current, list, aimId: index.aim.id
@@ -110,8 +110,8 @@ class HeaderMilestone extends Component {
             list.map((it) => {
               return (
                 <SwiperItem
-                  key={it.aim}
-                  itemId={it.aim}
+                  key={it.id}
+                  itemId={it.id as string}
                   onClick={this.onMilestoneItemTap}
                 >
                   <MilestoneItem {...it}></MilestoneItem>

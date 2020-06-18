@@ -1,5 +1,6 @@
 import Taro from '@tarojs/taro'
 import { GetReq, PostReq, DeleteReq, PutReq, PageReq, CallReq, WhereReq } from 'src/types'
+import { map } from 'lodash'
 
 class CloudRequest {
   constructor() {
@@ -36,7 +37,7 @@ class CloudRequest {
 
     return new Promise((resolve, reject) => {
       this._db.collection(collection).doc(id).get({
-        success: res => resolve(res.data),
+        success: res => resolve(this.filterFields(res.data)),
         fail: err => this.errorHandler(err, reject)
       })
     })
@@ -104,6 +105,7 @@ class CloudRequest {
   }
 
   where(req: WhereReq): Promise<Taro.DB.Document.IDocumentData[]> {
+    // TODO: 小程序 limit 默认20
     const { collection, data } = req
     if (!collection) throw 'db: collection shouldn\'t be empty'
 
@@ -112,7 +114,7 @@ class CloudRequest {
         ...data,
       })
         .get()
-        .then(res => resolve(res.data))
+        .then(res => resolve(this.filterListFields(res.data)))
         .catch(err => this.errorHandler(err, reject))
     })
   }
@@ -122,6 +124,7 @@ class CloudRequest {
    * @param req 
    */
   page(req: PageReq): Promise<any> {
+    // TODO: 小程序 limit 默认20
     const { collection, sort, filters, pageNo, pageSize = 10 } = req
     if (!collection) throw 'db: collection shouldn\'t be empty'
 
@@ -144,7 +147,7 @@ class CloudRequest {
 
       model.limit(pageSize)
         .end()
-        .then(res => resolve(res))
+        .then(res => resolve(this.filterListFields(res)))
         .catch(err => this.errorHandler(err, reject))
     })
   }
@@ -171,6 +174,21 @@ class CloudRequest {
         fail: (err: Taro.General.CallbackResult) => this.errorHandler(err, reject)
       })
     })
+  }
+
+  filterListFields = (list) => {
+    return map(list, this.filterFields)
+  }
+
+  filterFields = (item) => {
+    if (item['_id']) {
+      item['id'] = item._id
+      delete item['_id']
+    }
+    if (item['_openid']) {
+      delete item['_openid']
+    }
+    return item
   }
 }
 
