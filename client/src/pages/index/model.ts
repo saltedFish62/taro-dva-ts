@@ -1,6 +1,5 @@
 import { AimState, TaskState } from 'src/constants/enums'
 import services from 'src/services'
-import dayjs from 'dayjs'
 import { concat, map, max } from 'lodash'
 import { Task, Milestone } from 'src/types'
 
@@ -23,22 +22,22 @@ export default {
       // 拉正在进行的目标
       const aim = yield call(services.Aim.retrieveCurrentAim)
       if (!aim || Object.keys(aim).length === 0) return
-      yield put({ type: 'updateAim', payload: aim })
+      yield put({ type: 'mergeAim', payload: aim })
 
       // 查该目标的里程碑
       const milestones = yield call(services.Milestone.list, aim.id)
-      yield put({ type: 'updateMilestones', payload: { milestones } })
+      yield put({ type: 'mergeMilestones', payload: { milestones } })
     },
 
     * createAim({ payload }, { call, put }) {
       const { aim, slogan, date, } = payload
-      const res = yield call(services.Aim.createAim, {
+      const res = yield call(services.Aim.create, {
         title: aim,
         subtitle: slogan,
         date,
       })
       if (res) {
-        yield put({ type: 'updateAim', payload: res, })
+        yield put({ type: 'mergeAim', payload: res, })
         yield put({ type: 'closeAimPopup' })
       }
     },
@@ -47,8 +46,20 @@ export default {
       const res = yield call(services.Aim.retrieveCurrentAim)
       if (res.length > 0) {
         yield put({
-          type: 'updateAim',
+          type: 'mergeAim',
           payload: res[0]
+        })
+      }
+    },
+
+    * updateAim({ payload }, { call, put }) {
+      const { id } = payload
+      const res = yield call(services.Aim.update, payload)
+      if (res > 0) {
+        const aim = yield call(services.Aim.retrieve, id)
+        yield put({
+          type: 'mergeAim',
+          payload: aim
         })
       }
     },
@@ -66,7 +77,7 @@ export default {
       if (res) {
         const milestones = yield call(services.Milestone.list, aim_id)
         yield put({
-          type: 'updateMilestones',
+          type: 'mergeMilestones',
           payload: { milestones },
         })
       }
@@ -100,22 +111,23 @@ export default {
     },
   },
   reducers: {
-    updateAim(state: { aim: any; }, { payload: aim }: any) {
+    mergeAim(state: { aim: any; }, { payload: aim }: any) {
       return {
         ...state,
-        aim: Object.assign(state.aim, {
-          id: aim.id,
-          date: aim.date,
-          title: aim.title,
-          subtitle: aim.subtitle,
-          state: aim.state,
-        }),
+        aim: aim,
       }
     },
-    updateMilestones(state, { payload }) {
+    mergeMilestones(state, { payload }) {
       return {
         ...state,
         milestones: payload.milestones
+      }
+    },
+    clearAim(state) {
+      return {
+        ...state,
+        aim: {},
+        milestones: []
       }
     },
     updateTasks(state, { payload }) {

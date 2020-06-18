@@ -51,8 +51,6 @@ class TasksList extends Taro.Component {
 
     const idHeightMap = await this.getItemIdHeightMap()
 
-    console.log(idHeightMap)
-
     // 更新MovableArea高度
     let areaHeight = 0
     for (const k in idHeightMap) {

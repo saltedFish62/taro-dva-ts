@@ -50,7 +50,7 @@ type State = Readonly<typeof initialState>
   const list = orderBy(index.milestones, 'state', 'desc')
   if (list) {
     current = list.findIndex(it => it.state === MilestoneState.Current)
-    current = current === -1 ? list.length - 1 : current
+    current = current === -1 ? list.length : current
   }
   return {
     current, list, aimId: index.aim.id

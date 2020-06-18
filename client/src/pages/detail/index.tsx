@@ -8,12 +8,14 @@ import { map } from 'lodash'
 import { View, Image } from '@tarojs/components'
 import Tabs from 'src/components/Tabs'
 import MilestoneList from './components/List'
+import AimPopup from './components/AimPopup'
 
 import './index.scss'
 import PlusIcon from 'src/assets/images/plus-white.png'
 import TimeIcon from 'src/assets/images/time-white.png'
 import DeleteIcon from 'src/assets/images/delete-white.png'
 import FlagIcon from 'src/assets/images/flag-white.png'
+import { AimState } from 'src/constants/enums'
 
 // 上层组件传入的 props
 type OwnProps = {}
@@ -22,6 +24,8 @@ type OwnProps = {}
 type ModelProps = {
   aim: Aim
   milestones: Array<Milestone>
+  dispatch: Function
+  loading: boolean
 }
 
 interface Index {
@@ -37,13 +41,16 @@ const initialState = {
     { title: '已终结' }
   ],
   lists: map(new Array(4), () => []),
+
+  aimPopup: false,
 }
 
 type State = Readonly<typeof initialState>
 
-@connect((store) => ({
-  aim: store.index.aim,
-  milestones: store.index.milestones,
+@connect(({ index, loading }) => ({
+  aim: index.aim,
+  milestones: index.milestones,
+  loading: loading.models.index
 }))
 class Index extends Component {
 
@@ -57,11 +64,58 @@ class Index extends Component {
   }
 
   handleAimClick = () => {
-    console.log('click aim')
+    const { aim } = this.props
+    this.refs.aimPopup.init(aim)
+    this.setState({
+      aimPopup: true
+    })
+  }
+
+  handleUpdateAim = async (updatingAim) => {
+    const { aim } = this.props
+    const req = {
+      id: aim.id,
+      title: updatingAim.title,
+      subtitle: updatingAim.subtitle,
+      date: updatingAim.date
+    }
+
+    await this.props.dispatch({
+      type: 'index/updateAim',
+      payload: req
+    })
+    this.setState({ aimPopup: false })
   }
 
   handleFinishAim = () => {
-    console.log('click aim finish')
+    Taro.showModal({
+      title: '祝贺你！',
+      content: '这将意味着你完成了这一目标！',
+      cancelText: '稍等一下',
+      confirmText: '完成！',
+      confirmColor: '#52c41a',
+      success: async res => {
+        if (res.confirm) {
+          const { aim, dispatch } = this.props
+          await dispatch({
+            type: 'index/updateAim',
+            payload: {
+              id: aim.id,
+              state: AimState.Achieved
+            }
+          })
+          Taro.showToast({
+            title: '继续加油',
+          })
+          await dispatch({
+            type: 'index/clearAim',
+          })
+          setTimeout(() => {
+            Taro.navigateBack({ delta: 1 })
+          }, 2000)
+        }
+      }
+    })
   }
 
   handleSuspendAim = () => {
@@ -104,8 +158,11 @@ class Index extends Component {
     ]
 
     return (
-      <View className='aim' onClick={this.handleAimClick}>
-        <View className='aim__title'>{title ? title : '做有目标的咸鱼'}</View>
+      <View className='aim'>
+        <View
+          className='aim__title'
+          onClick={this.handleAimClick}
+        >{title ? title : '做有目标的咸鱼'}</View>
         <View className='aim__subtitle'>
           {`${toToday(date)}${date ? '，' : ''}${subtitle ? subtitle : '所有的努力都是灌溉自己。'}`}
         </View>
@@ -135,8 +192,14 @@ class Index extends Component {
   }
 
   render() {
-    const { current, tabs } = this.state
-    const { milestones } = this.props
+    const { current, tabs, aimPopup } = this.state
+    const { milestones, loading } = this.props
+
+    if (loading) {
+      Taro.showLoading({ title: '加载中..' })
+    } else {
+      Taro.hideLoading()
+    }
 
     return (
       <View>
@@ -155,6 +218,12 @@ class Index extends Component {
           ></Image>
         </View>
         <MilestoneList list={milestones}></MilestoneList>
+        <AimPopup
+          open={aimPopup}
+          onClose={() => this.setState({ aimPopup: false })}
+          onSubmit={this.handleUpdateAim}
+          ref='aimPopup'
+        ></AimPopup>
       </View>
     )
   }

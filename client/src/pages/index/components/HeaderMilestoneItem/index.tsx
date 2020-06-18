@@ -1,15 +1,20 @@
 import Taro, { Component } from '@tarojs/taro'
 import { View, Image } from '@tarojs/components'
+import ClassNames from 'classnames'
 
 import { MilestoneState } from 'src/constants/enums'
 
 import './index.scss'
 import plusPng from 'src/assets/images/plus-dark.png'
-import { Milestone } from 'src/types'
 
 type OwnProps = {
   add?: boolean
-} & Milestone
+  aim?: string,
+  state?: MilestoneState,
+  desc?: string,
+  reward?: string,
+  result?: string
+}
 
 interface MilestoneItem {
   props: OwnProps
@@ -19,7 +24,7 @@ class MilestoneItem extends Component {
 
   render() {
     const {
-      aim, state, desc, reward, rewarded, result, add
+      aim, state, desc, reward, result, add
     } = this.props
 
     if (add) {
@@ -43,7 +48,10 @@ class MilestoneItem extends Component {
             state === MilestoneState.Achieved ? '结果: ' + result : desc
           }
         </View>
-        <View className={'milestone__desc' + rewarded ? 'milestone__desc--rewarded' : ''}>奖励: {reward}</View>
+        <View className={ClassNames({
+          'milestone__desc': 1,
+          'milestone__desc--rewarded': state === MilestoneState.Rewarded
+        })}>奖励: {reward}</View>
       </View>
     )
   }

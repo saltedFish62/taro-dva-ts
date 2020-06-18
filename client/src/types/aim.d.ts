@@ -7,7 +7,7 @@ export type CreateAimReq = {
 }
 
 export type Aim = {
-  _id: string | number
+  id: string | number
   createTime: Date
   date: Date
   state: AimState

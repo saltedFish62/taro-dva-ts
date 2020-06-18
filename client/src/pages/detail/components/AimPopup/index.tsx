@@ -3,8 +3,7 @@ import { View, Button, Picker } from '@tarojs/components'
 import Popup from 'src/components/Popup'
 import { CustomInput, PickerContent } from 'src/components/Form'
 import Dayjs from 'dayjs'
-import { connect } from '@tarojs/redux'
-
+import { Aim } from 'src/types'
 import { toToday } from 'src/utils/format'
 
 import './index.scss'
@@ -12,18 +11,17 @@ import { ComponentClass } from 'react'
 
 type Props = {
   open: boolean
-  dispatch: Function
+  onClose: Function
+  onSubmit: Function
 }
 
-type OwnProps = {}
-
-interface AimPopup {
-  props: Props & OwnProps
+interface Index {
+  props: Props
 }
 
 const initialState = {
-  aim: '',
-  slogan: '',
+  title: '',
+  subtitle: '',
   date: '',
   error: {},
   today: Dayjs().format('YYYY-MM-DD'),
@@ -31,10 +29,7 @@ const initialState = {
 
 type State = Readonly<typeof initialState>
 
-@connect(({ index }) => ({
-  open: index.aim.popupVisibility,
-}))
-class AimPopup extends Component {
+class Index extends Component {
 
   state: State = initialState
 
@@ -50,39 +45,44 @@ class AimPopup extends Component {
     })
   }
 
+  init = (aim: Aim) => {
+    this.setState({
+      title: aim.title,
+      subtitle: aim.subtitle,
+      date: Dayjs(aim.date).format('YYYY-MM-DD')
+    })
+  }
+
   submit = () => {
     if (!this.validateForm()) return
 
     const {
-      aim, slogan, date
+      title, subtitle, date
     } = this.state
 
     const {
-      dispatch
+      onSubmit
     } = this.props
 
-    dispatch({
-      type: 'index/createAim',
-      payload: {
-        aim, slogan, date,
-      }
+    onSubmit && onSubmit({
+      title, subtitle, date
     })
   }
 
   validateForm() {
     const {
-      aim, slogan
+      title, subtitle
     } = this.state
 
     const error = {}
-    if (!aim) {
-      error['aim'] = '还没想好目标么'
+    if (!title) {
+      error['title'] = '还没想好目标么'
     }
-    if (aim.length > 8) {
-      error['aim'] = '简练的描述更有力量'
+    if (title.length > 8) {
+      error['title'] = '简练的描述更有力量'
     }
-    if (slogan && slogan.length > 50) {
-      error['slogan'] = '勉励的话说太多了'
+    if (subtitle && subtitle.length > 50) {
+      error['subtitle'] = '勉励的话说太多了'
     }
 
     this.setState({
@@ -92,9 +92,8 @@ class AimPopup extends Component {
   }
 
   onClose = () => {
-    this.props.dispatch({
-      type: 'index/closeAimPopup'
-    })
+    const { onClose } = this.props
+    onClose && onClose()
   }
 
   render() {
@@ -103,27 +102,28 @@ class AimPopup extends Component {
     } = this.props
 
     const {
-      aim, slogan, date, error, today
+      error, today, title, subtitle, date
     } = this.state
+
 
     return (
       <Popup open={open} onClose={this.onClose} mask>
         <View className='form'>
-          <View className='title p-b'>设立征程的目的地:</View>
+          <View className='title p-b'>修改这个目标:</View>
           <View className='p-b'>
             <CustomInput
               placeholder='远大的抱负用八个字足以形容'
-              name='aim'
-              value={aim}
+              name='title'
+              value={title}
               onInput={this.onInput}
-              error={error['aim']}
+              error={error['title']}
             ></CustomInput>
           </View>
           <View className='p-b'>
             <CustomInput
               placeholder='再写一句勉励自己'
-              name='slogan'
-              value={slogan}
+              name='subtitle'
+              value={subtitle}
               onInput={this.onInput}
             ></CustomInput>
           </View>
@@ -144,7 +144,7 @@ class AimPopup extends Component {
             <Button
               className='btn'
               onClick={this.submit}
-            >开启征程</Button>
+            >修正航线</Button>
           </View>
         </View>
       </Popup>
@@ -152,4 +152,4 @@ class AimPopup extends Component {
   }
 }
 
-export default AimPopup as ComponentClass<OwnProps>
+export default Index as ComponentClass<Props>

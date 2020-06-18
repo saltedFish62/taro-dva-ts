@@ -7,7 +7,7 @@ const collection = 'aim'
 
 export default class AimService {
 
-  createAim = async (req: CreateAimReq): Promise<Aim> => {
+  create = async (req: CreateAimReq): Promise<Aim> => {
     const { title, subtitle, date } = req
 
     const res = await cr.where({
@@ -45,6 +45,20 @@ export default class AimService {
       id: createRes,
     })
 
+  }
+
+  update = (req: Aim) => {
+    return cr.put({
+      collection,
+      data: req
+    })
+  }
+
+  retrieve = (id) => {
+    return cr.get({
+      collection,
+      id
+    })
   }
 
   retrieveCurrentAim = async () => {

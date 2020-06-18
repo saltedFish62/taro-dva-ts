@@ -87,20 +87,21 @@ class CloudRequest {
    * @param req 
    */
   put(req: PutReq): Promise<number> {
-    const { collection, data, method = 'update' } = req
+    const { collection, data } = req
     if (!collection) throw 'db: collection shouldn\'t be empty'
     if (!data.id) throw 'db: id shouldn\'t be empty'
-    if (!method) throw 'db: method shouldn\t be empty'
 
     return new Promise((resolve, reject) => {
       const id = data.id
       delete data.id
 
-      this._db.collection(collection).doc(id)[method]({
-        data,
-        success: res => resolve(res.stats.updated),
-        fail: (err: Taro.General.CallbackResult) => this.errorHandler(err, reject)
-      })
+      this._db.collection(collection)
+        .doc(id)
+        .update({
+          data,
+        })
+        .then(res => resolve(res.stats.updated))
+        .catch(err => this.errorHandler(err, reject))
     })
   }
 
