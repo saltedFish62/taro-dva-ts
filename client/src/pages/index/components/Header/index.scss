@@ -21,3 +21,21 @@
     }
   }
 }
+
+.aim {
+  padding-left: 50px;
+
+  &__title {
+    font-family: $f-cn-family;
+    font-size: $f-s-giant;
+    color: $f-c-base;
+    line-height: 84px;
+  }
+
+  &__subtitle {
+    color: $f-c-secondary;
+    font-family: STSong;
+    font-size: $f-s-header;
+    line-height: 43px;
+  }
+}

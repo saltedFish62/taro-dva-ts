@@ -6,6 +6,7 @@ import './index.scss'
 import { connect } from '@tarojs/redux'
 import Header from './components/Header'
 import Tasks from './components/Tasks'
+import { Aim } from 'src/types'
 
 // 上层组件传入的 props
 type OwnProps = {}
@@ -14,14 +15,16 @@ type OwnProps = {}
 type ModelProps = {
   loading: boolean
   dispatch: Function
+  aim: Aim
 }
 
 interface Index {
   props: OwnProps & ModelProps
 }
 
-@connect(({ loading }) => ({
+@connect(({ loading, index }) => ({
   loading: loading.models.index,
+  aim: index.aim
 }))
 class Index extends Component {
 
@@ -41,7 +44,7 @@ class Index extends Component {
   }
 
   render() {
-    const { loading } = this.props
+    const { loading, aim } = this.props
 
     if (loading) {
       Taro.showLoading({ title: '加载中..' })
@@ -51,7 +54,7 @@ class Index extends Component {
 
     return (
       <View>
-        <Header></Header>
+        <Header aim={aim}></Header>
         <Tasks></Tasks>
       </View>
     )

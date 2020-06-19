@@ -12,7 +12,6 @@ export default {
       id: '',          // id
       date: 0,         // ddl
       state: AimState.Current, // 状态
-      popupVisibility: false, // 是否打开弹框
     },
     milestones: [],    // 里程碑
     tasks: [],         // 今日事项
@@ -38,7 +37,6 @@ export default {
       })
       if (res) {
         yield put({ type: 'mergeAim', payload: res, })
-        yield put({ type: 'closeAimPopup' })
       }
     },
 
@@ -126,7 +124,13 @@ export default {
     clearAim(state) {
       return {
         ...state,
-        aim: {},
+        aim: {
+          title: '',       // 目标标题
+          subtitle: '',    // 口号
+          id: '',          // id
+          date: 0,         // ddl
+          state: AimState.Current, // 状态
+        },
         milestones: []
       }
     },
@@ -134,22 +138,6 @@ export default {
       return {
         ...state,
         tasks: payload,
-      }
-    },
-    openAimPopup(state) {
-      return {
-        ...state,
-        aim: Object.assign(state.aim, {
-          popupVisibility: true
-        }),
-      }
-    },
-    closeAimPopup(state) {
-      return {
-        ...state,
-        aim: Object.assign(state.aim, {
-          popupVisibility: false
-        }),
       }
     },
   },

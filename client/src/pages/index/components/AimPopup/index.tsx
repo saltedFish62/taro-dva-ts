@@ -15,7 +15,10 @@ type Props = {
   dispatch: Function
 }
 
-type OwnProps = {}
+type OwnProps = {
+  open: boolean
+  onClose: Function
+}
 
 interface AimPopup {
   props: Props & OwnProps
@@ -50,7 +53,7 @@ class AimPopup extends Component {
     })
   }
 
-  submit = () => {
+  submit = async () => {
     if (!this.validateForm()) return
 
     const {
@@ -61,12 +64,14 @@ class AimPopup extends Component {
       dispatch
     } = this.props
 
-    dispatch({
+    await dispatch({
       type: 'index/createAim',
       payload: {
         aim, slogan, date,
       }
     })
+
+    this.onClose()
   }
 
   validateForm() {
@@ -92,9 +97,7 @@ class AimPopup extends Component {
   }
 
   onClose = () => {
-    this.props.dispatch({
-      type: 'index/closeAimPopup'
-    })
+    this.props.onClose()
   }
 
   render() {
