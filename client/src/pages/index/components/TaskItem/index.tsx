@@ -10,39 +10,57 @@ import UrgentPng from 'src/assets/images/exclamation-red.png'
 import { TaskState } from 'src/constants/enums'
 import { Task } from 'src/types'
 
-type OwnProps = Task
+type OwnProps = {
+  open: boolean
+} & Task
 
 interface TaskItem {
   props: OwnProps
 }
 
 class TaskItem extends Component {
-  render() {
-    const {
-      plan, state
-    } = this.props
+  static defaultProps: OwnProps
 
-    let png: string
+  getCurrentPng = () => {
+    const { state, minutes } = this.props
+    if (1) {
+      // TODO: 时间紧迫
+      return UrgentPng
+    }
     switch (state) {
       case TaskState.Doing:
-        png = TimePng
-        break
+        return TimePng
       case TaskState.Finished:
-        png = CheckPng
-        break
+        return CheckPng
       case TaskState.Waiting:
-        png = QuestionPng
-        break
+        return QuestionPng
       default:
-        png = TimePng
+        return TimePng
     }
+  }
+
+  render() {
+    const {
+      plan,
+    } = this.props
 
     return (
       <View className='item'>
-        <Image className='item__icon' src={png}></Image>
+        <View className="item__icon">
+          <Image className='item__icon--current' src={this.getCurrentPng()}></Image>
+        </View>
         <View className='item__title'>{plan}</View>
       </View>
     )
   }
 }
+
+TaskItem.defaultProps = {
+  state: TaskState.Waiting,
+  plan: '',
+  minutes: 0,
+  sort: -1,
+  open: false,
+}
+
 export default TaskItem as ComponentClass<OwnProps>

@@ -31,6 +31,8 @@ type State = Readonly<typeof initialState>
 
 class Index extends Component {
 
+  static defaultProps: Props
+
   state: State = initialState
 
   onInput = ({ name, value }) => {
@@ -49,7 +51,7 @@ class Index extends Component {
     this.setState({
       title: aim.title,
       subtitle: aim.subtitle,
-      date: Dayjs(aim.date).format('YYYY-MM-DD')
+      date: aim.date ? Dayjs(aim.date).format('YYYY-MM-DD') : ''
     })
   }
 
@@ -150,6 +152,12 @@ class Index extends Component {
       </Popup>
     )
   }
+}
+
+Index.defaultProps = {
+  open: false,
+  onClose: () => { },
+  onSubmit: () => { }
 }
 
 export default Index as ComponentClass<Props>

@@ -98,6 +98,7 @@ class AimPopup extends Component {
 
   onClose = () => {
     this.props.onClose()
+    this.setState(initialState)
   }
 
   render() {

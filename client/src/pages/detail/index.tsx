@@ -87,12 +87,12 @@ class Index extends Component {
     this.setState({ aimPopup: false })
   }
 
-  handleFinishAim = () => {
+  handleAction = (title, content, confirmText, state, finishText) => {
     Taro.showModal({
-      title: '祝贺你！',
-      content: '这将意味着你完成了这一目标！',
+      title: title,
+      content: content,
       cancelText: '稍等一下',
-      confirmText: '完成！',
+      confirmText: confirmText,
       confirmColor: '#52c41a',
       success: async res => {
         if (res.confirm) {
@@ -101,11 +101,12 @@ class Index extends Component {
             type: 'index/updateAim',
             payload: {
               id: aim.id,
-              state: AimState.Achieved
+              state,
             }
           })
+          Taro.hideLoading()
           Taro.showToast({
-            title: '继续加油',
+            title: finishText,
           })
           await dispatch({
             type: 'index/clearAim',
@@ -118,12 +119,16 @@ class Index extends Component {
     })
   }
 
+  handleFinishAim = () => {
+    this.handleAction('祝贺你！', '这意味着你完成了这一目标！', '完成！', AimState.Achieved, '继续加油！')
+  }
+
   handleSuspendAim = () => {
-    console.log('click aim suspend')
+    this.handleAction('是否挂起？', '过段时间再来完成这个目标', '挂起', AimState.Hangup, '先思考思考')
   }
 
   handleDeleteAim = () => {
-    console.log('click aim delete')
+    this.handleAction('放弃这个目标', '我想探寻一条更正确的道路', '放弃', AimState.Abandon, '再次起航')
   }
 
   handleTabsChange = (idx) => {

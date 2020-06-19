@@ -28,6 +28,8 @@ const initialState = {
   draggingY: 0,    // 正在拖拽节点的位置
   startPageY: 0,   // 长按时手指的位置
   startY: 0,       // 长按时节点位置
+
+  optionsOpenIdx: -1,  // 操作条打开的事件
 }
 
 type State = Readonly<typeof initialState>
@@ -221,6 +223,7 @@ class TasksList extends Taro.Component {
       idPosMap,
       draggingId,
       draggingY,
+      optionsOpenIdx,
     } = this.state
 
     if (list.length < 1) {
@@ -235,7 +238,7 @@ class TasksList extends Taro.Component {
         style={{ height: areaHeight + 'px' }}
       >
         {
-          list.map(it => (
+          list.map((it, idx) => (
             <MovableView
               key={it.id}
               className="draggable__item"
@@ -258,7 +261,7 @@ class TasksList extends Taro.Component {
                 className={draggingId === it.id ? 'task__item--dragging' : 'task__item'}
                 id={it.id}
               >
-                <TaskItem {...it}></TaskItem>
+                <TaskItem {...it} option={idx === optionsOpenIdx}></TaskItem>
               </View>
             </MovableView>
           ))
