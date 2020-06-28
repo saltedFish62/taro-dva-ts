@@ -65,15 +65,19 @@ class HeaderMilestone extends Component {
   }
 
   openMilestonePopup = () => {
-    const { aimId, dispatch } = this.props
+    const { aimId } = this.props
     if (aimId) {
       this.setState({ milestonePopup: true })
     } else {
-      dispatch({ type: 'index/openAimPopup' })
+      Taro.showToast({
+        icon: 'none',
+        title: '请先点击上方建立一个目标哦'
+      })
     }
   }
 
   onMilestoneItemTap = (e) => {
+    // TODO
     console.log(e)
   }
 

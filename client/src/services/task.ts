@@ -38,4 +38,24 @@ export default class Todo {
     })
 
   }
+
+  delete = (id): Promise<number> => {
+
+    return cr.delete({
+      collection,
+      id
+    })
+
+  }
+
+  update = (task: Task) => {
+    return cr.put({
+      collection,
+      data: {
+        id: task.id!,
+        state: task.state,
+        sort: task.sort,
+      }
+    })
+  }
 }

@@ -1,6 +1,6 @@
 import { AimState, TaskState } from 'src/constants/enums'
 import services from 'src/services'
-import { concat, map, max } from 'lodash'
+import { concat, map, max, remove } from 'lodash'
 import { Task, Milestone } from 'src/types'
 
 export default {
@@ -82,9 +82,9 @@ export default {
     },
 
     * fetchTasks(_action, { call, put }) {
-      const res = yield call(services.Todo.list)
+      const res = yield call(services.Task.list)
       yield put({
-        type: 'updateTasks',
+        type: 'mergeTasks',
         payload: res
       })
     },
@@ -101,12 +101,42 @@ export default {
         state: TaskState.Waiting,
       }
 
-      const res = yield call(services.Todo.create, req)
+      const res = yield call(services.Task.create, req)
       yield put({
-        type: 'updateTasks',
+        type: 'mergeTasks',
         payload: concat(tasks, res)
       })
     },
+
+    * updateTask({ payload }, { call, put, select }) {
+      const { tasks } = yield select(state => state.index)
+      const { id, state } = payload
+
+      const idx = tasks.findIndex(it => it.id === id)
+      if (idx === -1) return
+
+      tasks[idx].state = state
+      yield call(services.Task.update, tasks[idx])
+
+      yield put({
+        type: 'mergeTasks',
+        payload: tasks
+      })
+    },
+
+    * deleteTask({ payload }, { call, put, select }) {
+      const { tasks } = yield select(state => state.index)
+      const { id } = payload
+
+      yield call(services.Task.delete, id)
+
+      remove(tasks, (it: Task) => id === it.id)
+
+      yield put({
+        type: 'mergeTasks',
+        payload: tasks
+      })
+    }
   },
   reducers: {
     mergeAim(state: { aim: any; }, { payload: aim }: any) {
@@ -134,7 +164,7 @@ export default {
         milestones: []
       }
     },
-    updateTasks(state, { payload }) {
+    mergeTasks(state, { payload }) {
       return {
         ...state,
         tasks: payload,

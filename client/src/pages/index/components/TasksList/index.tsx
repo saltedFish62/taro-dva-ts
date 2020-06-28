@@ -39,6 +39,11 @@ type State = Readonly<typeof initialState>
 }))
 class TasksList extends Taro.Component {
 
+  constructor(props) {
+    super(props)
+    this.onLongPress = this.onLongPress.bind(this)
+  }
+
   state: State = initialState
 
   componentDidUpdate(_prevProps, { listLen }) {
@@ -46,6 +51,26 @@ class TasksList extends Taro.Component {
     if (list && list.length != listLen) {
       this.initHeight()
     }
+  }
+
+  handleItemChange = async (idx, state) => {
+    const { dispatch, list } = this.props
+    if (state === -1) {
+      // 删除 task
+      await dispatch({
+        type: 'index/deleteTask',
+        payload: { id: list[idx].id }
+      })
+    } else {
+      // 更新
+      await dispatch({
+        type: 'index/updateTask',
+        payload: { id: list[idx].id, state }
+      })
+    }
+    this.setState({
+      optionsOpenIdx: -1,  // 操作条打开的事件
+    })
   }
 
   initHeight = async () => {
@@ -194,7 +219,7 @@ class TasksList extends Taro.Component {
     }, 300)
   }
 
-  onTouchMove = (e) => {
+  onTouchMove(e) {
     e.stopPropagation()
     const { pageY } = e.changedTouches[0]
     const { startPageY, idPosMap, draggingId, startY } = this.state
@@ -249,11 +274,9 @@ class TasksList extends Taro.Component {
               animation={!(draggingId === it.id && draggingY !== idPosMap[it.id!].y)}
               y={draggingId === it.id ? draggingY : idPosMap[it.id!].y}
               style={{
-                zIndex: draggingId === it.id ? 999 : idPosMap[it.id!] && idPosMap[it.id!].sort
+                zIndex: draggingId === it.id || idx === optionsOpenIdx ? 999 : idPosMap[it.id!] && idPosMap[it.id!].sort
               }}
-              onLongPress={(e) => {
-                this.onLongPress(it.id, e)
-              }}
+              onLongPress={(e) => { this.onLongPress(it.id, e) }}
               onTouchMove={this.onTouchMove}
               onTouchEnd={this.onTouchEnd}
             >
@@ -261,7 +284,13 @@ class TasksList extends Taro.Component {
                 className={draggingId === it.id ? 'task__item--dragging' : 'task__item'}
                 id={it.id}
               >
-                <TaskItem {...it} option={idx === optionsOpenIdx}></TaskItem>
+                <TaskItem
+                  {...it}
+                  open={idx === optionsOpenIdx}
+                  onOpen={() => { this.setState({ optionsOpenIdx: idx }) }}
+                  onClose={() => { this.setState({ optionsOpenIdx: -1 }) }}
+                  onChange={(state) => { this.handleItemChange(idx, state) }}
+                ></TaskItem>
               </View>
             </MovableView>
           ))
